@@ -17,8 +17,6 @@ export const postNewAccount = async (email, password) => {
       }
     );
 
-    console.log(response);
-
     return true;
   } catch (error) {
     console.log(error);

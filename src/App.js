@@ -2,6 +2,7 @@ import styled from "styled-components";
 import SignIn from "./Page/SignIn";
 import SignUp from "./Page/SignUp";
 import AllToDo from "./Page/AllToDo";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -58,6 +59,18 @@ function App() {
   const goToToDo = () => {
     window.location.href = "/todo";
   };
+
+  useEffect(() => {
+    if (
+      path !== "/signup" &&
+      path !== "/signin" &&
+      path !== "/todo" &&
+      path !== "/"
+    ) {
+      alert("잚못된 접근입니다.");
+      window.location.href = "/";
+    }
+  }, []);
 
   return (
     <Wrapper>

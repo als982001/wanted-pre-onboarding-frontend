@@ -53,8 +53,6 @@ export const updateTodo = async (accessToken, todoId, todo, isCompleted) => {
       }
     );
 
-    console.log(response);
-
     return response.data;
   } catch (error) {
     console.log(error);
@@ -69,7 +67,6 @@ export const deleteTodo = async (accessToken, todoId) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(response);
 
     return true;
   } catch (error) {
