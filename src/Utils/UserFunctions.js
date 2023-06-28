@@ -4,7 +4,7 @@ const API_PATH = "https://www.pre-onboarding-selection-task.shop/";
 
 export const postNewAccount = async (email, password) => {
   try {
-    const response = await axios.post(
+    await axios.post(
       `${API_PATH}auth/signup`,
       {
         email,

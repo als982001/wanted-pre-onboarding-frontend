@@ -48,6 +48,8 @@ const PageBtn = styled.div`
 function App() {
   const path = window.location.pathname;
 
+  console.log(path);
+
   const goToSignIn = () => {
     window.location.href = "/signin";
   };

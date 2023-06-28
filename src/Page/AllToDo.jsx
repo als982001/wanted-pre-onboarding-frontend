@@ -6,6 +6,7 @@ import {
   getTodos,
   updateTodo,
 } from "../Utils/TodoFunctions";
+import Todos from "../Components/Todos";
 
 const Wrapper = styled.main`
   width: 100%;
@@ -33,6 +34,7 @@ const Title = styled.h2`
   font-weight: bold;
 `;
 
+/*
 const ToDos = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,6 +47,7 @@ const ToDos = styled.div`
     justify-content: space-between;
   }
 `;
+*/
 
 const Form = styled.form`
   display: flex;
@@ -80,8 +83,8 @@ export default function AllToDo() {
 
   const [newTodo, setNewTodo] = useState("");
   const [todos, setTodos] = useState([]);
-  const [updateIdx, setUpdateIdx] = useState(-1);
-  const [updateContent, setUpdateContent] = useState("");
+  // const [updateIdx, setUpdateIdx] = useState(-1);
+  // const [updateContent, setUpdateContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleNewTodo = async (event) => {
@@ -96,33 +99,6 @@ export default function AllToDo() {
     setNewTodo((prev) => "");
 
     return;
-  };
-
-  const handleDeleteTodo = async (todoId) => {
-    await deleteTodo(accessToken, todoId);
-
-    const updatedTodos = todos.filter((todo) => todo.id !== todoId);
-
-    setTodos(updatedTodos);
-  };
-
-  const handleUpdate = async (todoId, todo, isCompleted) => {
-    await updateTodo(accessToken, todoId, todo, isCompleted);
-
-    const updatedTodos = todos.map((item) => {
-      if (item.id === todoId) {
-        return {
-          id: todoId,
-          todo,
-          isCompleted,
-          userId: item.userId,
-        };
-      }
-
-      return item;
-    });
-
-    setTodos(updatedTodos);
   };
 
   const handleLogout = () => {
@@ -162,92 +138,7 @@ export default function AllToDo() {
         {isLoading ? (
           <h1>Loading...</h1>
         ) : (
-          <ToDos>
-            {todos.map((todo) => (
-              <li key={todo.id}>
-                {updateIdx === todo.id ? (
-                  <>
-                    <div>
-                      <input type="checkbox" />
-                      <input
-                        value={updateContent}
-                        onChange={(event) =>
-                          setUpdateContent((prev) => event.target.value)
-                        }
-                        data-testid="modify-input"
-                      />
-                    </div>
-                    <div>
-                      <button
-                        onClick={(event) => {
-                          event.preventDefault();
-                          handleUpdate(
-                            todo.id,
-                            updateContent,
-                            todo.isCompleted
-                          );
-                          setUpdateContent((prev) => "");
-                          setUpdateIdx((prev) => -1);
-                        }}
-                        data-testid="submit-button"
-                      >
-                        제출
-                      </button>
-                      <button
-                        onClick={(event) => {
-                          event.preventDefault();
-                          setUpdateIdx((prev) => -1);
-                          setUpdateContent((prev) => "");
-                        }}
-                        data-testid="cancel-button"
-                      >
-                        취소
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={todo.isCompleted}
-                        onChange={(event) => {
-                          event.preventDefault();
-                          handleUpdate(
-                            todo.id,
-                            todo.todo,
-                            event.target.checked
-                          );
-                        }}
-                      />
-                      <span>{todo.todo}</span>
-                    </label>
-                    <div>
-                      <button
-                        onClick={(event) => {
-                          event.preventDefault();
-                          setUpdateIdx((prev) => todo.id);
-                          setUpdateContent((prev) => todo.todo);
-                        }}
-                        data-testid="modify-button"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={(event) => {
-                          event.preventDefault();
-                          handleDeleteTodo(todo.id);
-                        }}
-                        data-testid="delete-button"
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </>
-                )}
-              </li>
-            ))}
-          </ToDos>
+          <Todos todos={todos} setTodos={setTodos} />
         )}
         <Logout>
           <span onClick={handleLogout}>로그아웃하기...</span>
